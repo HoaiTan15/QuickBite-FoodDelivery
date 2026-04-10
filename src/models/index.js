@@ -18,13 +18,13 @@ Order.belongsTo(User, { foreignKey: 'customerId', as: 'customer' });
 Restaurant.hasMany(Order, { foreignKey: 'restaurantId', as: 'orders' });
 Order.belongsTo(Restaurant, { foreignKey: 'restaurantId', as: 'restaurant' });
 
-User.hasMany(Order, { foreignKey: 'driverId', as: 'deliveries', onDelete: 'SET NULL', onUpdate: 'CASCADE' });
+User.hasMany(Order, { foreignKey: 'driverId', as: 'deliveries' });
 Order.belongsTo(User, { foreignKey: 'driverId', as: 'driver' });
 
-Order.hasMany(OrderDetail, { foreignKey: 'orderId', as: 'details', onDelete: 'CASCADE' });
+Order.hasMany(OrderDetail, { foreignKey: 'orderId', as: 'details' });
 OrderDetail.belongsTo(Order, { foreignKey: 'orderId', as: 'order' });
 
-MenuItem.hasMany(OrderDetail, { foreignKey: 'menuItemId', as: 'orderDetails', onDelete: 'CASCADE' });
+MenuItem.hasMany(OrderDetail, { foreignKey: 'menuItemId', as: 'orderDetails' });
 OrderDetail.belongsTo(MenuItem, { foreignKey: 'menuItemId', as: 'menuItem' });
 
 module.exports = {

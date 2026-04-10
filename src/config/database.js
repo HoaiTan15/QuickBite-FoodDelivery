@@ -23,6 +23,9 @@ const sequelize = new Sequelize(
         trustServerCertificate: true,
         encrypt: false,
       },
+      authentication: {
+        type: 'default',
+      },
     },
   }
 );

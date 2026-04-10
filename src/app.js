@@ -11,14 +11,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-sequelize.sync({ alter: false })
-  .then(() => {
-    console.log('✅ All models synced with database');
-  })
-  .catch((err) => {
-    console.error('❌ Error syncing database:', err);
-  });
-
 app.get('/', (req, res) => {
   res.json({ 
     message: '🍔 Welcome to QuickBite API',
