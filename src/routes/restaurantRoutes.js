@@ -9,6 +9,16 @@ const router = express.Router();
 
 // Công khai - lấy tất cả nhà hàng
 router.get('/', restaurantController.getAllRestaurants);
+
+
+router.get(
+  '/owner/me',
+  authMiddleware.protect,
+  authMiddleware.authorize('restaurant'),
+  restaurantController.getMyRestaurant
+);
+
+
 router.get('/:id', restaurantController.getRestaurantById);
 
 // Cần xác thực - Chủ nhà hàng
@@ -17,13 +27,6 @@ router.post(
   authMiddleware.protect,
   authMiddleware.authorize('restaurant'),
   restaurantController.createRestaurant
-);
-
-router.get(
-  '/owner/me',
-  authMiddleware.protect,
-  authMiddleware.authorize('restaurant'),
-  restaurantController.getMyRestaurant
 );
 
 router.put(
@@ -42,9 +45,17 @@ router.delete(
 
 // ============ MENU ITEM ROUTES ============
 
-// Công khai - lấy menu items
-router.get('/:restaurantId/menu-items', menuItemController.getMenuItemsByRestaurant);
-router.get('/menu-items/:id', menuItemController.getMenuItemById);
+
+router.get(
+  '/menu-items/:id',
+  menuItemController.getMenuItemById
+);
+
+
+router.get(
+  '/:restaurantId/menu-items',
+  menuItemController.getMenuItemsByRestaurant
+);
 
 // Cần xác thực - Chủ nhà hàng
 router.post(

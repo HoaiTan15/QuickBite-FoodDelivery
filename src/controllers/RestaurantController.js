@@ -1,4 +1,5 @@
 const { Restaurant, User } = require('../models');
+const { Op } = require('sequelize');
 
 // Tạo nhà hàng mới
 const createRestaurant = async (req, res) => {
@@ -35,7 +36,7 @@ const createRestaurant = async (req, res) => {
     });
 
     res.status(201).json({
-      message: '✅ Tạo nhà hàng thành công',
+      message: ' Tạo nhà hàng thành công',
       restaurant: {
         id: restaurant.id,
         name: restaurant.name,
@@ -61,7 +62,7 @@ const getAllRestaurants = async (req, res) => {
 
     // Tìm kiếm theo tên
     if (search) {
-      whereClause.name = { [require('sequelize').Op.like]: `%${search}%` };
+      whereClause.name = { [Op.like]: `%${search}%` };
     }
 
     // Lọc theo loại ẩm thực
@@ -146,7 +147,7 @@ const updateRestaurant = async (req, res) => {
     });
 
     res.status(200).json({
-      message: '✅ Cập nhật nhà hàng thành công',
+      message: 'Cập nhật nhà hàng thành công',
       restaurant,
     });
   } catch (error) {
@@ -172,7 +173,7 @@ const deleteRestaurant = async (req, res) => {
     await restaurant.destroy();
 
     res.status(200).json({
-      message: '✅ Xóa nhà hàng thành công',
+      message: ' Xóa nhà hàng thành công',
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
