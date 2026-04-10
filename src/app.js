@@ -2,32 +2,49 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 
-const { sequelize, User, Restaurant, MenuItem, Order, OrderDetail } = require('./models');
+const { sequelize } = require('./models');
+const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 
+// Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
+// Database sync
+sequelize.sync({ alter: false })
+  .then(() => {
+    console.log('✅ Database connected');
+  })
+  .catch((err) => {
+    console.error('❌ Database error:', err.message);
+  });
+
+// Routes
 app.get('/', (req, res) => {
   res.json({ 
-    message: '🍔 Welcome to QuickBite API',
-    status: 'Server is running',
-    timestamp: new Date().toISOString(),
+    message: '🍔 QuickBite API', 
+    status: 'running',
+    version: '1.0.0'
   });
 });
 
+console.log('📝 Registering auth routes...');
+app.use('/api/auth', authRoutes);
+console.log('✅ Auth routes registered');
+
+// 404 handler
 app.use((req, res) => {
-  res.status(404).json({ error: 'Route not found', path: req.originalUrl });
+  res.status(404).json({ error: '❌ Route not found' });
 });
 
+// Error handler
 app.use((err, req, res, next) => {
   console.error('Error:', err);
-  res.status(err.status || 500).json({
-    error: err.message || 'Internal server error',
-    timestamp: new Date().toISOString(),
+  res.status(err.status || 500).json({ 
+    error: err.message || 'Internal server error' 
   });
 });
 
