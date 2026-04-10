@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const { Restaurant } = require('../models');
 
 exports.protect = (req, res, next) => {
   try {
@@ -24,4 +25,24 @@ exports.authorize = (...roles) => {
     }
     next();
   };
+};
+
+// Kiểm tra chủ nhà hàng
+exports.verifyRestaurantOwner = async (req, res, next) => {
+  try {
+    const { restaurantId } = req.params;
+
+    const restaurant = await Restaurant.findByPk(restaurantId);
+    if (!restaurant) {
+      return res.status(404).json({ error: '❌ Nhà hàng không tồn tại' });
+    }
+
+    if (restaurant.ownerId !== req.user.id) {
+      return res.status(403).json({ error: '❌ Bạn không có quyền truy cập nhà hàng này' });
+    }
+
+    next();
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };

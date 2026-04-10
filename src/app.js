@@ -4,6 +4,7 @@ require('dotenv').config();
 
 const { sequelize } = require('./models');
 const authRoutes = require('./routes/authRoutes');
+const restaurantRoutes = require('./routes/restaurantRoutes');
 
 const app = express();
 
@@ -16,10 +17,10 @@ app.use(express.static('public'));
 // Database sync
 sequelize.sync({ alter: false })
   .then(() => {
-    console.log('✅ Database connected');
+    console.log(' Database connected');
   })
   .catch((err) => {
-    console.error('❌ Database error:', err.message);
+    console.error(' Database error:', err.message);
   });
 
 // Routes
@@ -31,13 +32,14 @@ app.get('/', (req, res) => {
   });
 });
 
-console.log('📝 Registering auth routes...');
+console.log('Registering routes...');
 app.use('/api/auth', authRoutes);
-console.log('✅ Auth routes registered');
+app.use('/api/restaurants', restaurantRoutes);
+console.log('Routes registered');
 
 // 404 handler
 app.use((req, res) => {
-  res.status(404).json({ error: '❌ Route not found' });
+  res.status(404).json({ error: ' Route not found' });
 });
 
 // Error handler
