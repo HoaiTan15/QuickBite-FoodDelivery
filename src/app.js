@@ -6,6 +6,8 @@ const { sequelize } = require('./models');
 const authRoutes = require('./routes/authRoutes');
 const restaurantRoutes = require('./routes/restaurantRoutes');
 const orderRoutes = require('./routes/orderRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
+const ratingRoutes = require('./routes/ratingRoutes');
 
 const app = express();
 
@@ -37,6 +39,8 @@ console.log('📝 Registering routes...');
 app.use('/api/auth', authRoutes);
 app.use('/api/restaurants', restaurantRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/reviews', reviewRoutes);
+app.use('/api/ratings', ratingRoutes);
 console.log('✅ Routes registered');
 
 // 404 handler
